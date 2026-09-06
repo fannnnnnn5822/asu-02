@@ -22,7 +22,7 @@
   'use strict';
   var NS = 'asu02';
   var BTN = '🦁 Asu-02';
-  var VERSION = '0.2.1';
+  var VERSION = '0.2.2';
   var GOLD = '#e2a93b';
   var SYS_NAME = 'Asu-02';
   var DOC, VIEW;
@@ -464,7 +464,7 @@
       B + ' .gf-bubble .gf-bname{display:block;font-size:10.5px;color:' + c + ';font-weight:700;margin-bottom:2px}',
       B + '.gf-busy{animation:' + NS + '-pulse 1s ease-in-out infinite}',
       '@keyframes ' + NS + '-pulse{0%,100%{filter:drop-shadow(0 6px 13px rgba(0,0,0,.55))}50%{filter:drop-shadow(0 0 12px ' + c + ') drop-shadow(0 6px 13px rgba(0,0,0,.55))}}',
-      P + '{position:fixed;right:22px;bottom:282px;width:380px;max-width:calc(100vw - 30px);height:560px;max-height:calc(100vh - 200px);box-sizing:border-box;z-index:2147483599;display:none;flex-direction:column;overflow:hidden;border-radius:18px;',
+      P + '{position:fixed;right:22px;bottom:282px;width:380px;max-width:calc(100vw - 30px);height:560px;max-height:calc(100vh - 200px);box-sizing:border-box;z-index:2147483599;display:none;flex-direction:column;overflow:hidden;border-radius:18px;color-scheme:dark;',
         'background:rgba(24,20,12,.96);color:#f3ead6;border:1px solid rgba(226,169,59,.28);box-shadow:0 18px 60px rgba(0,0,0,.55);font-family:-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;font-size:13px;line-height:1.55;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}',
       P + ' *{box-sizing:border-box}',
       P + ' .gf-head{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:grab;touch-action:none;user-select:none;border-bottom:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg,rgba(226,169,59,.12),transparent)}',
@@ -493,7 +493,8 @@
       P + ' .gf-sug button{flex:none;border:0;border-radius:7px;padding:4px 9px;font-size:11px;cursor:pointer;background:' + c + ';color:#1a1207;font-weight:700}',
       P + ' .gf-sug button:disabled{opacity:.45;cursor:default}',
       P + ' .gf-foot{display:flex;gap:6px;padding:8px 10px 10px;border-top:1px solid rgba(255,255,255,.08);align-items:flex-end}',
-      P + ' textarea{flex:1;min-height:38px;max-height:110px;resize:none;border-radius:11px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;-webkit-text-fill-color:#fff;padding:9px 11px;font:inherit;outline:none;line-height:1.4}',
+      // 安卓 WebView 会用系统样式把 textarea/select/input 刷成白底（小狸那边玩家截图报的），全部 !important 压死 + 面板 color-scheme:dark
+      P + ' textarea{flex:1;min-height:38px;max-height:110px;resize:none;border-radius:11px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06) !important;background-color:rgba(255,255,255,.06) !important;color:#fff !important;-webkit-text-fill-color:#fff;padding:9px 11px;font:inherit;outline:none;line-height:1.4;appearance:none;-webkit-appearance:none;box-shadow:none}',
       P + ' textarea:focus{border-color:' + c + '}',
       P + ' .gf-send{width:38px;height:38px;border-radius:11px;border:0;background:' + c + ';color:#1a1207;cursor:pointer;font-size:15px;flex:none;display:flex;align-items:center;justify-content:center}',
       P + ' .gf-send:disabled{opacity:.5;cursor:default}',
@@ -505,7 +506,7 @@
       P + ' .gf-ov .gf-step{display:inline-flex;align-items:center;gap:2px}',
       P + ' .gf-ov .gf-step .gf-pill{padding:3px 12px;font-size:15px;line-height:1}',
       P + ' .gf-ov .gf-step b{min-width:34px;text-align:center;color:#fff;font-size:14px}',
-      P + ' .gf-ov input[type=text]{width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#fff;-webkit-text-fill-color:#fff;border-radius:9px;padding:8px 10px;font:inherit;outline:none}',
+      P + ' .gf-ov input[type=text],' + P + ' .gf-ov select{width:100%;background:rgba(255,255,255,.08) !important;background-color:rgba(255,255,255,.08) !important;border:1px solid rgba(255,255,255,.12);color:#fff !important;-webkit-text-fill-color:#fff;border-radius:9px;padding:8px 10px;font:inherit;outline:none;appearance:none;-webkit-appearance:none;box-shadow:none}',
       P + ' .gf-ov .gf-note{font-size:11px;color:rgba(255,255,255,.45);line-height:1.5}',
       P + ' .gf-ov .gf-row{display:flex;gap:6px;flex-wrap:wrap}',
       P + ' .gf-ov .gf-pill{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);color:#ddd;border-radius:999px;padding:5px 11px;font-size:12px;cursor:pointer}',
