@@ -22,7 +22,7 @@
   'use strict';
   var NS = 'asu02';
   var BTN = '🦁 Asu-02';
-  var VERSION = '0.2.2';
+  var VERSION = '0.2.3';
   var GOLD = '#e2a93b';
   var SYS_NAME = 'Asu-02';
   var DOC, VIEW;
@@ -453,6 +453,7 @@
       B + '.gf-snap-l{transform:translateX(-52%);opacity:.5}',
       B + '.gf-snap-r:hover{transform:translateX(30%);opacity:.85}',
       B + '.gf-snap-l:hover{transform:translateX(-30%);opacity:.85}',
+      B + '.gf-snap-r .gf-badge{right:auto;left:-3px}',   // 红点挪到露出来的那半边
       B + ' .gf-face{display:block;width:100%;height:100%;animation:gfFloat 4.2s ease-in-out infinite}',
       B + ' .gf-face svg{display:block;width:100%;height:100%;overflow:visible}',
       '@keyframes gfFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}',
