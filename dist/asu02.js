@@ -22,7 +22,7 @@
   'use strict';
   var NS = 'asu02';
   var BTN = '🦁 Asu-02';
-  var VERSION = '0.2.0';
+  var VERSION = '0.2.1';
   var GOLD = '#e2a93b';
   var SYS_NAME = 'Asu-02';
   var DOC, VIEW;
@@ -424,7 +424,7 @@
     return '';
   }
   function snapNow() {
-    if (!settings.snap || isOpen()) return;
+    if (!settings.snap || isOpen() || !isNarrow()) return;   // 只在手机上贴边（Fan：电脑不用）
     var b = DOC.getElementById(NS + '-ball'); if (!b) return;
     if (b.querySelector('.gf-bubble.on')) return;
     var side = edgeSide(); if (!side) return;
@@ -774,8 +774,8 @@
       '<div class="gf-note">开着的话正文每出来 N 回合它就播报一次、给两条走向。每次多一个 LLM 调用（用下面选的 API，不走你的预设）。</div>' +
       '<label>球上冒气泡 <button class="gf-pill gf-set-bubble ' + (settings.bubble ? 'on' : '') + '">' + (settings.bubble ? '开' : '关') + '</button></label>' +
       '<label>球的大小 <span class="gf-row">' + [['s', '小'], ['m', '中'], ['l', '大']].map(function (o) { return '<button class="gf-pill gf-set-size ' + (settings.ballSize === o[0] ? 'on' : '') + '" data-v="' + o[0] + '">' + o[1] + '</button>'; }).join('') + '</span></label>' +
-      '<label>球贴边半藏 <button class="gf-pill gf-set-snap ' + (settings.snap ? 'on' : '') + '">' + (settings.snap ? '开' : '关') + '</button></label>' +
-      '<div class="gf-note">球靠着屏幕左右边几秒没人碰，就半藏进边里变半透明，不占地方；点它、冒气泡、开窗都会出来。</div>' +
+      '<label>球贴边半藏（手机） <button class="gf-pill gf-set-snap ' + (settings.snap ? 'on' : '') + '">' + (settings.snap ? '开' : '关') + '</button></label>' +
+      '<div class="gf-note">只在手机上生效：球靠着屏幕左右边几秒没人碰，就半藏进边里变半透明，不占地方；点它、冒气泡、开窗都会出来。电脑上不贴。</div>' +
       '<label>点「采纳」之后 <span class="gf-row">' +
         '<button class="gf-pill gf-set-adopt ' + (settings.adoptMode !== 'input' ? 'on' : '') + '" data-mode="inject">悄悄注入下一轮</button>' +
         '<button class="gf-pill gf-set-adopt ' + (settings.adoptMode === 'input' ? 'on' : '') + '" data-mode="input">填进输入框</button>' +
