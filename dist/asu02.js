@@ -22,7 +22,7 @@
   'use strict';
   var NS = 'asu02';
   var BTN = '🦁 Asu-02';
-  var VERSION = '0.2.3';
+  var VERSION = '0.2.4';
   var GOLD = '#e2a93b';
   var SYS_NAME = 'Asu-02';
   var DOC, VIEW;
@@ -228,6 +228,7 @@
         if (raw.adoptMode === 'inject' || raw.adoptMode === 'input') settings.adoptMode = raw.adoptMode;
         if (BALL_PX[raw.ballSize]) settings.ballSize = raw.ballSize;
         if (raw.pos && typeof raw.pos === 'object') settings.pos = raw.pos;
+        if (raw.posNarrow && typeof raw.posNarrow === 'object') settings.posNarrow = raw.posNarrow;
         if (raw.panelPos && typeof raw.panelPos === 'object') settings.panelPos = raw.panelPos;
       }
     } catch (e) {}
@@ -313,8 +314,9 @@
     recalib();
     var sz = ballPx();
     b.style.width = sz + 'px'; b.style.height = sz + 'px';
-    if (settings.pos && typeof settings.pos.left === 'number' && !isNarrow()) {
-      var c = clampXY(settings.pos.left, settings.pos.top, sz + 2); setClientPos(b, c.x, c.y);
+    var saved = isNarrow() ? settings.posNarrow : settings.pos;   // 手机拖过的位置也记住（安卓玩家报小狸「球跑来跑去」，同一副骨架一起修）
+    if (saved && typeof saved.left === 'number') {
+      var c = clampXY(saved.left, saved.top, sz + 2); setClientPos(b, c.x, c.y);
     } else {
       // 默认放在小狸球上面一点，两个球同时装也不叠
       setClientPos(b, vpW() - sz - 12, Math.max(60, (isNarrow() ? inputTop() : vpH()) - 268));
@@ -403,11 +405,12 @@
       if (remain > 4) p.style.height = (Math.max(240, r.height - remain) / CAL.sy) + 'px';
     } catch (e) {}
   }
+  function keyboardUp() { try { var vv = VIEW.visualViewport; if (!vv) return false; return (VIEW.innerHeight - vv.height - (vv.offsetTop || 0)) > 60; } catch (e) { return false; } }
   function reflow() {
     if (!mounted) return;
     var typing = typingInPanel();
-    if (!typing) placeBall();
-    if (isOpen()) { if (typing) liftForKeyboard(); else setOpen(true); }
+    if (!typing && !keyboardUp()) placeBall();   // 键盘弹着的时候球不动
+    if (isOpen()) { if (typing) liftForKeyboard(); else if (!keyboardUp()) setOpen(true); }
   }
   function reflowSoon() { clearTimeout(kvTimer); kvTimer = setTimeout(reflow, 300); }
 
@@ -663,7 +666,7 @@
     function up(e) {
       if (!dragging) return; dragging = false;
       try { ball.releasePointerCapture(e.pointerId); } catch (err) {}
-      if (moved) { var r = ball.getBoundingClientRect(); if (!isNarrow()) { settings.pos = { left: r.left, top: r.top }; saveSettings(); } snapSoon(1500); }
+      if (moved) { var r = ball.getBoundingClientRect(); if (isNarrow()) settings.posNarrow = { left: r.left, top: r.top }; else settings.pos = { left: r.left, top: r.top }; saveSettings(); snapSoon(1500); }
       else { setOpen(!isOpen()); if (isOpen()) setUnread(0); }
     }
     ball.addEventListener('pointerup', up);
@@ -815,7 +818,7 @@
       try { uninjectPrompts([ADOPT_ID, PROP_ID]); } catch (e) {}
       state = blankState(); saveState(); toggleOverlay('set', false); renderAll(); toast('解绑了。下一回合它会重新叮一声', 'warn');
     });
-    s.querySelector('.gf-set-resetpos').addEventListener('click', function () { settings.pos = null; settings.panelPos = null; saveSettings(); placeBall(); placePanel(); toast('回去了', 'ok'); });
+    s.querySelector('.gf-set-resetpos').addEventListener('click', function () { settings.pos = null; settings.posNarrow = null; settings.panelPos = null; saveSettings(); placeBall(); placePanel(); toast('回去了', 'ok'); });
     var kIn = s.querySelector('.gf-api-key'); if (kIn) kIn.addEventListener('focus', function () { kIn.removeAttribute('readonly'); });
     s.querySelector('.gf-api-fetch').addEventListener('click', async function () {
       var btn = this, u = s.querySelector('.gf-api-url').value.trim(), k = s.querySelector('.gf-api-key').value.trim();
